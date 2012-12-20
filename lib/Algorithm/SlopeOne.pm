@@ -63,8 +63,8 @@ Ratings count matrix.
 
 =cut
 
-has diffs => (is => q(rw), default => sub { {} });
-has freqs => (is => q(rw), default => sub { {} });
+has diffs => (is => q(rwp), default => sub { {} });
+has freqs => (is => q(rwp), default => sub { {} });
 
 =method clear
 
@@ -75,8 +75,8 @@ Reset the instance.
 sub clear {
     my ($self) = @_;
 
-    $self->diffs({});
-    $self->freqs({});
+    $self->_set_diffs({});
+    $self->_set_freqs({});
 
     return $self;
 }
