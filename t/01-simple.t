@@ -39,12 +39,6 @@ is_deeply(
 
 $s->clear;
 
-is_deeply(
-    $s->predict({ Eastenders => 7.25 }),
-    {},
-    q(empty),
-);
-
 $s->update({
     24          => 9.5,
     Lost        => 8.2,
@@ -80,4 +74,4 @@ is_deeply(
     q(non-matching),
 );
 
-done_testing 6;
+done_testing 5;

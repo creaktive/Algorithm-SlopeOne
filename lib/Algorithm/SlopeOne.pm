@@ -48,7 +48,7 @@ use strict;
 use utf8;
 use warnings qw(all);
 
-use Carp qw(croak);
+use Carp qw(confess);
 use Moo;
 
 # VERSION
@@ -83,7 +83,7 @@ sub clear {
 
 =method update($userprefs)
 
-Update matrices with user preference data, accepts HashRef or ArrayRef of HashRefs:
+Update matrices with user preference data, accepts a HashRef or an ArrayRef of HashRefs:
 
     $s->predict({ StarWars => 5, LOTR => 5, StarTrek => 3, Prometheus => 1 });
     $s->predict({ StarWars => 3, StarTrek => 5, Prometheus => 4 });
@@ -102,7 +102,7 @@ sub update {
         $userprefs = [ $userprefs ];
     } elsif ($type eq q(ARRAY)) {
     } else {
-        croak q(Pass HashRef or ArrayRef of HashRefs!);
+        confess q(Expects a HashRef or an ArrayRef of HashRefs);
     }
 
     for my $ratings (@{$userprefs}) {
@@ -127,6 +127,9 @@ Recommend new items given known item ratings.
 
 sub predict {
     my ($self, $userprefs) = @_;
+
+    confess q(Expects a HashRef)
+        unless q(HASH) eq ref $userprefs;
 
     my (%preds, %freqs);
     while (my ($item, $rating) = each %{$userprefs}) {

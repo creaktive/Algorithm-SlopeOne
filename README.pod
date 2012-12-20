@@ -69,7 +69,7 @@ Reset the instance.
 
 =head2 update($userprefs)
 
-Update matrices with user preference data, accepts HashRef or ArrayRef of HashRefs:
+Update matrices with user preference data, accepts a HashRef or an ArrayRef of HashRefs:
 
     $s->predict({ StarWars => 5, LOTR => 5, StarTrek => 3, Prometheus => 1 });
     $s->predict({ StarWars => 3, StarTrek => 5, Prometheus => 4 });
