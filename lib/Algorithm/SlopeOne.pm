@@ -9,26 +9,26 @@ package Algorithm::SlopeOne;
     use Data::Printer;
 
     my $s = Algorithm::SlopeOne->new;
-    $s->update({
-        alice => {
+    $s->update([
+        {
             squid       => 1.0,
             cuttlefish  => 0.5,
             octopus     => 0.2,
-        }, bob => {
+        }, {
             squid       => 1.0,
             octopus     => 0.5,
             nautilus    => 0.2,
-        }, carole => {
+        }, {
             squid       => 0.2,
             octopus     => 1.0,
             cuttlefish  => 0.4,
             nautilus    => 0.4,
-        }, dave => {
+        }, {
             cuttlefish  => 0.9,
             octopus     => 0.4,
             nautilus    => 0.5,
         },
-    });
+    ]);
     p $s->predict({ squid => 0.4 });
 
     # Output:
@@ -48,6 +48,7 @@ use strict;
 use utf8;
 use warnings qw(all);
 
+use Carp qw(croak);
 use Moo;
 
 # VERSION
@@ -80,25 +81,31 @@ sub clear {
     return $self;
 }
 
-=method update($userdata)
+=method update($userprefs)
 
-Update matrices with data in a form:
+Update matrices with user preference data, accepts HashRef or ArrayRef of HashRefs:
 
-    {
-        user1 => {
-            item1 => rating1,
-            item2 => rating2,
-            ...
-        },
-        user2 => ...
-    }
+    $s->predict({ StarWars => 5, LOTR => 5, StarTrek => 3, Prometheus => 1 });
+    $s->predict({ StarWars => 3, StarTrek => 5, Prometheus => 4 });
+    $s->predict([
+        { IronMan => 4, Avengers => 5, XMen => 3 },
+        { XMen => 5, DarkKnight => 5, SpiderMan => 3 },
+    ]);
 
 =cut
 
 sub update {
-    my ($self, $userdata) = @_;
+    my ($self, $userprefs) = @_;
 
-    for my $ratings (values %{$userdata}) {
+    my $type = ref $userprefs;
+    if ($type eq q(HASH)) {
+        $userprefs = [ $userprefs ];
+    } elsif ($type eq q(ARRAY)) {
+    } else {
+        croak q(Pass HashRef or ArrayRef of HashRefs!);
+    }
+
+    for my $ratings (@{$userprefs}) {
         for my $item1 (keys %{$ratings}) {
             for my $item2 (keys %{$ratings}) {
                 $self->freqs->{$item1}{$item2} ++;
@@ -112,13 +119,9 @@ sub update {
 
 =method predict($userprefs)
 
-Recommend new items given item ratings in a form:
+Recommend new items given known item ratings.
 
-    {
-        item1 => rating1,
-        item2 => rating2,
-        ...
-    }
+    $s->predict({ StarWars => 5, LOTR => 5, Prometheus => 1 });
 
 =cut
 
@@ -149,6 +152,8 @@ sub predict {
 * L<Slope One Predictors for Online Rating-Based Collaborative Filtering|http://lemire.me/fr/abstracts/SDM2005.html> - original paper
 * L<Collaborative filtering made easy|http://www.serpentine.com/blog/2006/12/12/collaborative-filtering-made-easy/> - Python implementation by Bryan O'Sullivan (primary reference, test code)
 * L<github.com/ashleyw/Slope-One|https://github.com/ashleyw/Slope-One> - Ruby port of the above by Ashley Williams (used to borrow test code)
+* L<Programming Collective Intelligence book|http://shop.oreilly.com/product/9780596529321.do> by Toby Segaran
+* L<Data Sets by GroupLens Research|http://www.grouplens.org/node/12>
 
 =cut
 
