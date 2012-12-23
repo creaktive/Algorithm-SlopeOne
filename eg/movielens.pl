@@ -8,7 +8,7 @@ use warnings qw(all);
 # MovieLens Data Sets: http://www.grouplens.org/node/73
 
 use Algorithm::SlopeOne;
-use Sort::Key::Top qw(rnkeytopsort);
+#use Sort::Key::Top qw(rnkeytopsort);
 
 my $slopeone = Algorithm::SlopeOne->new;
 my %names;
@@ -37,7 +37,13 @@ my $result = $slopeone->predict({
     q|Waterworld (1995)|            => 3,
 });
 
-for my $key (rnkeytopsort { $result->{$_} } 10 => keys %{$result}) {
+#my @top10 = rnkeytopsort { $result->{$_} } 10 => keys %{$result};
+my @top10 = (sort
+    { ($result->{$b} <=> $result->{$a}) or ($a cmp $b) }
+    keys %{$result}
+) [0 .. 9];
+
+for my $key (@top10) {
     printf qq(%-50s\t%0.2f\n), $key, $result->{$key};
 }
 

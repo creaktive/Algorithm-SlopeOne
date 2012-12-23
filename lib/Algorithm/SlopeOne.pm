@@ -49,9 +49,20 @@ use utf8;
 use warnings qw(all);
 
 use Carp qw(confess);
-use Moo;
 
 # VERSION
+
+=for Pod::Coverage
+new
+=cut
+
+sub new {
+    my ($class) = @_;
+    return bless {
+        diffs   => {},
+        freqs   => {},
+    } => $class;
+}
 
 =attr diffs
 
@@ -63,8 +74,15 @@ Ratings count matrix.
 
 =cut
 
-has diffs => (is => q(rwp), default => sub { {} });
-has freqs => (is => q(rwp), default => sub { {} });
+sub diffs {
+    my ($self) = @_;
+    return $self->{diffs};
+}
+
+sub freqs {
+    my ($self) = @_;
+    return $self->{freqs};
+}
 
 =method clear
 
@@ -75,8 +93,10 @@ Reset the instance.
 sub clear {
     my ($self) = @_;
 
-    $self->_set_diffs({});
-    $self->_set_freqs({});
+    for (qw(diffs freqs)) {
+        delete $self->{$_};
+        $self->{$_} = {};
+    }
 
     return $self;
 }
