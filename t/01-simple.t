@@ -9,9 +9,9 @@ use Algorithm::SlopeOne;
 
 my $s = Algorithm::SlopeOne->new;
 isa_ok($s, q(Algorithm::SlopeOne));
-can_ok($s, qw(update predict));
+can_ok($s, qw(add predict));
 
-$s->update([
+$s->add([
     {
         squid       => 1.0,
         cuttlefish  => 0.5,
@@ -39,17 +39,17 @@ is_deeply(
 
 $s->clear;
 
-$s->update({
+$s->add({
     24          => 9.5,
     Lost        => 8.2,
     House       => 6.8,
 });
-$s->update({
+$s->add({
     24          => 3.7,
     "Big Bang Theory" => 2.1,
     House       => 8.3,
 });
-$s->update([
+$s->add([
     {
         24          => 9.5,
         Lost        => 3.4,

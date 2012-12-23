@@ -18,7 +18,7 @@ version 0.003
     use Data::Printer;
 
     my $s = Algorithm::SlopeOne->new;
-    $s->update([
+    $s->add([
         {
             squid       => 1.0,
             cuttlefish  => 0.5,
@@ -67,7 +67,7 @@ Ratings count matrix.
 
 Reset the instance.
 
-=head2 update($userprefs)
+=head2 add($userprefs)
 
 Update matrices with user preference data, accepts a HashRef or an ArrayRef of HashRefs:
 
@@ -85,6 +85,10 @@ Recommend new items given known item ratings.
     $s->predict({ StarWars => 5, LOTR => 5, Prometheus => 1 });
 
 =for Pod::Coverage new
+
+=head1 TODO
+
+Implement I<Non-Weighted> and I<Bi-Polar Slope One> schemes.
 
 =head1 REFERENCES
 

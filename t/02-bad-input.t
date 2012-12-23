@@ -15,11 +15,11 @@ is_deeply(
     q(empty),
 );
 
-eval { $s->update(1) };
+eval { $s->add(1) };
 like(
     $@,
     qr/^Expects a HashRef or an ArrayRef of HashRefs at/,
-    q(update()),
+    q(add()),
 );
 
 eval { $s->predict(1) };

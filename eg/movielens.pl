@@ -71,7 +71,7 @@ sub load_data {
     }
     close $fh;
     while (my (undef, $ratings) = each %user) {
-        $slopeone->update($ratings);
+        $slopeone->add($ratings);
     }
     return;
 }

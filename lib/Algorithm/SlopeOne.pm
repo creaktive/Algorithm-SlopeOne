@@ -9,7 +9,7 @@ package Algorithm::SlopeOne;
     use Data::Printer;
 
     my $s = Algorithm::SlopeOne->new;
-    $s->update([
+    $s->add([
         {
             squid       => 1.0,
             cuttlefish  => 0.5,
@@ -101,7 +101,7 @@ sub clear {
     return $self;
 }
 
-=method update($userprefs)
+=method add($userprefs)
 
 Update matrices with user preference data, accepts a HashRef or an ArrayRef of HashRefs:
 
@@ -114,7 +114,7 @@ Update matrices with user preference data, accepts a HashRef or an ArrayRef of H
 
 =cut
 
-sub update {
+sub add {
     my ($self, $userprefs) = @_;
 
     my $type = ref $userprefs;
@@ -167,6 +167,10 @@ sub predict {
         keys %preds
     };
 }
+
+=head1 TODO
+
+Implement I<Non-Weighted> and I<Bi-Polar Slope One> schemes.
 
 =head1 REFERENCES
 
